@@ -17,7 +17,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 # Initialize an LLM using Gemini
 model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
 # Connect to PostgreSQL database
-db_uri = "postgresql+psycopg2://postgres:postgres@localhost:5432/mis-1.6-aug"
+db_uri = "postgresql+psycopg2://postgres:postgres@localhost:5432/test-1.6-aug"
 db = SQLDatabase.from_uri(
     db_uri,
     engine_args={"pool_size": 500}
