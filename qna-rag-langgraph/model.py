@@ -6,6 +6,7 @@ from langchain_postgres import PGVector
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_postgres import PGEngine, PGVectorStore
 from loader import get_webpage_data
+from langchain_community.retrievers import BM25Retriever
 
 embedding_model = HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2')
 engine = PGEngine.from_connection_string(
@@ -44,3 +45,16 @@ def store_into_pgvector():
     print("Adding data to pg-vector...")
     vector_store.add_documents(documents=all_splits)
     print("Done!")
+
+
+_bm25_retriever = None
+
+def get_bm25_retriever():
+    global _bm25_retriever
+    if _bm25_retriever is None:
+        print("Initializing BM25 Retriever from webpage...")
+        docs = get_webpage_data()
+        all_splits = get_splitted_doc(docs)
+        _bm25_retriever = BM25Retriever.from_documents(all_splits)
+        _bm25_retriever.k = 5  # Retrieve top 5 documents
+    return _bm25_retriever
